@@ -5,5 +5,5 @@ let count = (i) => {
         console.log(i);
         return count(i);
     }
-}
+};
 count(0);
