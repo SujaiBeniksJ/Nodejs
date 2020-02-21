@@ -18,6 +18,7 @@ function objectToJSON(obj) {
         if (typeof obj[key] !== "undefined")
             jsonObj += ",";
     });
+    if(jsonObj[jsonObj.length-1] === ",")
     jsonObj = jsonObj.slice(0, jsonObj.length - 1);
     jsonObj += "}";
 }
@@ -49,6 +50,7 @@ function anArray(arr) {
         }
         jsonObj += ",";
     });
+    if(jsonObj[jsonObj.length-1] === ",")
     jsonObj = jsonObj.slice(0, jsonObj.length - 1);
     jsonObj += "]";
 }
@@ -167,14 +169,23 @@ let input = {
 };
 
 function printValidJson(input) {
-    if (Array.isArray(input)) {
-        anArray(input);
+    let result="";
+    if(typeof input === "object" && input!==null){
+        if (Array.isArray(input)) {
+        result=anArray(input);
     }
     else {
-        objectToJSON(input);
+        result=objectToJSON(input);
     }
+}
+else{
+    if(input !== undefined)
+    jsonObj+=input;
+}
+// return result;
 }
 
 printValidJson(input);
 
 console.log("The Json Object is: " + jsonObj);
+// console.log(JSON.stringify(undefined))
