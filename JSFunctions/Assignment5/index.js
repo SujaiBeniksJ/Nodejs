@@ -1,85 +1,114 @@
-let jsonObj = "";
 
-function objectToJSON(obj) {
-    jsonObj += "{";
+// This function is responsible for converting object to JSON where object is passed as argument
+function objectToJSON(obj,result) {
+    result += "{";
     Object.keys(obj).map(key => {
         if (typeof obj[key] !== "object") {
-            notAnObject(key, obj);
+            result = printPrimitiveInJSON(key, obj,result);
         }
         else {
             if (Array.isArray(obj[key])) {
-                jsonObj += `"${key}": `;
-                anArray(obj[key]);
+                result += `"${key}": `;
+                result = arrayToJSON(obj[key], result);
             }
             else {
-                anObject(key, obj[key]);
+                result = printObjectInJSON(key, obj[key], result);
             }
         }
         if (typeof obj[key] !== "undefined")
-            jsonObj += ",";
+            result += ",";
     });
-    if(jsonObj[jsonObj.length-1] === ",")
-    jsonObj = jsonObj.slice(0, jsonObj.length - 1);
-    jsonObj += "}";
+    if(result[result.length-1] === ",")
+    result = result.slice(0, result.length - 1);
+    result += "}";
+    return result;
 }
 
-function anObject(key, obj) {
-    if (obj === null) {
-        jsonObj += `"${key}": ${obj}`;
-    }
-    else if (!Array.isArray(obj[key])) {
-        jsonObj += `"${key}": `;
-        objectToJSON(obj);
-    }
-}
-
-function anArray(arr) {
-    jsonObj += "[";
+// This Function is responsible for converting array to JSON where array is passed as argument
+function arrayToJSON(arr, result) {
+    result += "[";
     arr.map(val => {
         if (typeof val !== "object") {
-            notAnObjectArr(val);
+            result = printArrayInJSON(val, result);
         }
         else {
             if (val === null)
-                jsonObj += "null";
+                result += "null";
             else if (Array.isArray(val))
-                anArray(val);
+                result = arrayToJSON(val, result);
             else {
-                objectToJSON(val);
+                result = objectToJSON(val, result);
             }
         }
-        jsonObj += ",";
+        result += ",";
     });
-    if(jsonObj[jsonObj.length-1] === ",")
-    jsonObj = jsonObj.slice(0, jsonObj.length - 1);
-    jsonObj += "]";
+    if(result[result.length-1] === ",")
+    result = result.slice(0, result.length - 1);
+    result += "]";
+    return result;
 }
 
-function notAnObject(key, obj) {
+
+// These three functions are responsible printing the format of JSON
+function printObjectInJSON(key, obj, result) {
+    if (obj === null) {
+        result += `"${key}": ${obj}`;
+    }
+    else if (!Array.isArray(obj[key])) {
+        result += `"${key}": `;
+        result = objectToJSON(obj, result);
+    }
+    return result;
+}
+
+function printPrimitiveInJSON(key, obj, result) {
     if (typeof obj[key] !== "object") {
         if (typeof obj[key] === "string") {
-            jsonObj += `"${key}": "${obj[key]}"`;
+            result += `"${key}": "${obj[key]}"`;
         }
         else {
             if (typeof obj[key] !== "undefined")
-                jsonObj += `"${key}": ${obj[key]}`;
+                result += `"${key}": ${obj[key]}`;
         }
     }
+    return result;
 }
 
-function notAnObjectArr(val) {
+function printArrayInJSON(val, result) {
     if (typeof val !== "object") {
         if (typeof val === "string") {
-            jsonObj += `"${val}"`;
+            result += `"${val}"`;
         }
         else {
             if (typeof val !== "undefined")
-                jsonObj += `${val}`;
+                result += `${val}`;
+            else
+                result += "null";
         }
     }
+    return result;
+}
+
+//initial function that start the recursive call
+function printValidJson(input) {
+    let result="";
+    if(typeof input === "object" && input!==null){
+        if (Array.isArray(input)) {
+        result=arrayToJSON(input, result);
+    }
+    else {
+        result=objectToJSON(input, result);
+    }
+}
+else{
+    if(input !== undefined)
+    result=input;
+}
+return result;
 }
 
 
+//sample Input
 let input = {
     input: [[{
         num: [1,
@@ -164,28 +193,10 @@ let input = {
             },
         }
         ,
-        [1, 2, "3", null, 5]
+        [1, 2, "3", null, undefined]
     ]]
 };
 
-function printValidJson(input) {
-    let result="";
-    if(typeof input === "object" && input!==null){
-        if (Array.isArray(input)) {
-        result=anArray(input);
-    }
-    else {
-        result=objectToJSON(input);
-    }
-}
-else{
-    if(input !== undefined)
-    jsonObj+=input;
-}
-// return result;
-}
-
-printValidJson(input);
-
-console.log("The Json Object is: " + jsonObj);
-// console.log(JSON.stringify(undefined))
+//printing the result
+console.log("The Json Object is: ");
+console.log(printValidJson(input, ""));
