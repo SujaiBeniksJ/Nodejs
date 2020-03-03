@@ -1,4 +1,4 @@
-let schema1 = {
+let tokenInput = {
     "properties": {
         "input": {
             "type": ["number", "string"],
@@ -7,7 +7,7 @@ let schema1 = {
     }
 };
 
-let schema2 = {
+let tokenValidation = {
     "properties": {
         "token": {
             "type": "string",
@@ -16,13 +16,13 @@ let schema2 = {
     }
 };
 
-let schema3 = {
+let multiple10input = {
     "type": "integer",
     "maximum": 99999,
     "minimum": -99999
 };
 
-let schema4 = {
+let occurenceCounterInput = {
     "properties": {
         "input": {
             "type": "string",
@@ -32,16 +32,16 @@ let schema4 = {
     }
 };
 
-let schema5 = {
+let checkArmStrongInput = {
     "type": "integer",
     "minimum": 0,
     "maximum": 99999
 };
 
 module.exports = {
-    schema1,
-    schema2,
-    schema3,
-    schema4,
-    schema5,
+    tokenInput,
+    tokenValidation,
+    multiple10input,
+    occurenceCounterInput,
+    checkArmStrongInput,
 };
