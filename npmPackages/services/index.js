@@ -3,7 +3,7 @@ let countOccurence = (str) => {
     let result = {};
     strArr.forEach(ch => {
         if(ch !== " ")
-        result[ch] = (typeof result[ch] === "number") ? ++result[ch] : 1;
+            result[ch] = (typeof result[ch] === "number") ? ++result[ch] : 1;
     });
     return(result);
 };
@@ -16,9 +16,9 @@ let armstrongNum = (num) => {
         result += Number(val) ** len;
     });
     if(result === Number(num))
-    return true;
+        return true;
     else
-    return false;
+        return false;
 };
 
 let getMultiple10 = (input) => {

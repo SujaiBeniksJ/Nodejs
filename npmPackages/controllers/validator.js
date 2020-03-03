@@ -13,27 +13,27 @@ let ajvValidator = (schema, input, res) => {
 
 let tokenInputValidator = (req, res, next) => {
     if(ajvValidator(schema.tokenInput, req.body, res))
-    next();
+        next();
 };
 
 let tokenValidationValidator = (req, res, next) => {
     if(ajvValidator(schema.tokenValidation, req.query, res))
-    next();
+        next();
 };
 
 let multiple10inputValidator = (req, res, next) => {
     if(ajvValidator(schema.multiple10input, Number(req.params.input), res))
-    next();
+        next();
 };
 
 let occurenceCounterInputValidator = (req, res, next) => {
     if(ajvValidator(schema.occurenceCounterInput, req.body, res))
-    next();
+        next();
 };
 
 let checkArmstringInputValidator = (req, res, next) => {
     if(ajvValidator(schema.checkArmStrongInput, Number(req.params.num), res))
-    next();
+        next();
 };
 
 module.exports = {
