@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Projects", {
+    const Project = queryInterface.createTable("Projects", {
       Pid: {
         primaryKey: true,
         type: Sequelize.INTEGER
@@ -10,6 +10,7 @@ module.exports = {
         type: Sequelize.TEXT
       }
     });
+    return Project;
   },
   down: (queryInterface) => {
     return queryInterface.dropTable("Projects");

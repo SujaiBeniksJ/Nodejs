@@ -1,7 +1,8 @@
 "use strict";
+const ProjectTable = require("../models/ProjectModel");
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Engineers", {
+    const EngineerTable = queryInterface.createTable("Engineers", {
       Eid: {
         allowNull: false,
         autoIncrement: true,
@@ -12,17 +13,13 @@ module.exports = {
         type: Sequelize.TEXT
       },
       Pid: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "Projects",
-            // schema: "schema"
-          },
-          key: "Pid"
-        }
+        type: Sequelize.INTEGER
       }
     });
-    // return Engineer;
+    EngineerTable.associate = function() {
+      ProjectTable.hasMany(EngineerTable, {foreignKey: "Pid"});
+    };
+    return EngineerTable;
   },
   down: (queryInterface) => {
     return queryInterface.dropTable("Engineers");

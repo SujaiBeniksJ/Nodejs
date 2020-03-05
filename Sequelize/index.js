@@ -1,8 +1,8 @@
-const EngineerTable = require("./models/EngineerModel.js");
+// const EngineerTable = require("./models/EngineerModel.js");
 
-const ProjectTable = require("./models/ProjectModel");
+// const ProjectTable = require("./models/ProjectModel");
 
-const ManagerTable = require("./models/MangerModel");
+// const ManagerTable = require("./models/MangerModel");
 
 const {
   findEngineersByProject,
@@ -12,35 +12,49 @@ const {
   deleteProject
 } = require("./queries");
 
-ProjectTable.hasMany(EngineerTable, {foreignKey: "Pid"});
-ProjectTable.hasOne(ManagerTable);
+// ProjectTable.hasMany(EngineerTable, {foreignKey: "Pid"});
+// ProjectTable.hasOne(ManagerTable, {foreignKey: "Pid"});
 
-// EngineerTable.sync()
+// ProjectTable.sync({force: true})
 // .then(()=>{
-//   return ProjectTable.sync();
+//   return EngineerTable.sync({force: true});
 // })
 // .then(()=>{
-//   return ManagerTable.sync();
+//   return ManagerTable.sync({force: true});
 // });
 
 
 
 // Function used to display the engineers which are belonging to particular project
 
-findEngineersByProject("Project2");
+// 1st param projectName
+
+findEngineersByProject("Project1");
 
 // Function used to assign manager to project or create a new manager row if it is managerid is not there in existing object
 
-// assignManagerToProject(2, 3, "Manager2");
+// 1st param managerId
+// 2nd param projecId
+// 3rd param managerName
+
+// assignManagerToProject(2, 1, "Manager3");
 
 // Function used to delete the particular emplyee details
 
-// deleteEmployeeDetails(4);
+//1st param engineerID
+
+// deleteEmployeeDetails(6);
 
 // Function used to update the employee details
 
-// updateEmployeeDetails(5, "updated manger", 2);
+//1st param engineerID
+//2nd param newManagerName
+//3rd param projectId
+
+// updateEmployeeDetails(6, "updated manager", 2);
 
 // Function used to delete Project
 
-// deleteProject("Project3");
+//1st param projectName
+
+// deleteProject("Project2");
