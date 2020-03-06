@@ -11,7 +11,13 @@ const ManagerTable = sequelize.define("Managers", {
     type: Sequelize.TEXT,
   },
   Pid: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    references: {
+      model: "Projects",
+      key: "Pid",
+    },
+    onDelete: "CASCADE",
   }
 },
 {
