@@ -7,7 +7,6 @@ const sandbox = require("sinon").createSandbox();
 
 const services = require("../../services/index.js");
 
-
 chai.use(chaiHttp);
 
 describe("testing the multiple10 route",()=>{

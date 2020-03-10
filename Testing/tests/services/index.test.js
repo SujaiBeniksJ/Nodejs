@@ -1,8 +1,7 @@
 const services = require("../../services");
 const assert = require("chai").assert;
 const jwt = require("jsonwebtoken");
-const sinon = require("sinon");
-
+const sandbox = require("sinon").createSandbox();
 
 describe("countOccurence",()=>{
   it("testing the flow of count occurence should return characters with their occurence",()=>{
@@ -34,16 +33,23 @@ describe("getMultiple10()",()=>{
 });
 
 describe("verifyToken()",()=>{
+  let stub;
+  beforeEach(()=>{
+    stub = sandbox.stub(jwt, "verify");
+  });
+  afterEach(()=>{
+    sandbox.restore();
+  });
   it("should return the success value received from jwt.verify",async() => {
-    let stub = sinon.stub(jwt, "verify").returns(Promise.resolve({err: null, decoded:{data: true}}));
+    stub.returns(Promise.resolve({err: null, decoded:{data: true}}));
     let result = await services.verifyToken(20);
+    assert.equal(stub.called, true);
     assert.deepEqual(result, {err: null, decoded:{data: true}});
-    stub.restore();
   });
   it("should return the false value received from jwt.verify",async() => {
-    let stub = sinon.stub(jwt, "verify").returns(Promise.resolve({err: true, decoded:null}));
+    stub.returns(Promise.resolve({err: true, decoded:null}));
     let result = await services.verifyToken(20);
+    assert.equal(stub.called, true);
     assert.deepEqual(result, {err: true, decoded:null});
-    stub.restore();
   });
 });
