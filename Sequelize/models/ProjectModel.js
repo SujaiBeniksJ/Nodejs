@@ -1,23 +1,21 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../connection.js");
+module.exports = (sequelize, Sequelize) => {
 
-const EngineerTable = require("./EngineerModel.js");
-
-const ProjectTable = sequelize.define("Projects", {
-  Pid: {
-    type: Sequelize.INTEGER,
-    primaryKey: true
+  const ProjectTable = sequelize.define("Projects", {
+    Pid: {
+      type: Sequelize.INTEGER,
+      primaryKey: true
+    },
+    name: {
+      type: Sequelize.TEXT,
+    }
   },
-  name: {
-    type: Sequelize.TEXT,
-  }
-},
-{
-  timestamps: false
-});
+  {
+    timestamps: false
+  });
 
-ProjectTable.associate = function() {
-  ProjectTable.hasMany(EngineerTable, {foreignKey: "Pid"});
+  ProjectTable.associate = function() {
+    ProjectTable.hasMany(this.sequelize.models.EngineerTable, {foreignKey: "Pid"});
+  };
+
+  return ProjectTable;
 };
-
-module.exports = ProjectTable;

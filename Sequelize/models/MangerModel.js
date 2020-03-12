@@ -1,31 +1,29 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../connection.js");
-const ProjectTable = require("./ProjectModel");
+module.exports = (sequelize, Sequelize) => {
 
-const ManagerTable = sequelize.define("Managers", {
-  Mid: {
-    type: Sequelize.INTEGER,
-    primaryKey: true
-  },
-  name: {
-    type: Sequelize.TEXT,
-  },
-  Pid: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-    references: {
-      model: "Projects",
-      key: "Pid",
+  const ManagerTable = sequelize.define("Managers", {
+    Mid: {
+      type: Sequelize.INTEGER,
+      primaryKey: true
     },
-    onDelete: "CASCADE",
-  }
-},
-{
-  timestamps: false
-});
+    name: {
+      type: Sequelize.TEXT,
+    },
+    Pid: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      references: {
+        model: "Projects",
+        key: "Pid",
+      },
+      onDelete: "CASCADE",
+    }
+  },
+  {
+    timestamps: false
+  });
 
-ManagerTable.associate = function() {
-  ManagerTable.hasOne(ProjectTable, {foreignKey: "Pid"});
+  ManagerTable.associate = function() {
+    ManagerTable.hasOne(this.sequelize.models.ProjectTable, {foreignKey: "Pid"});
+  };
+  return ManagerTable;
 };
-
-module.exports = ManagerTable;

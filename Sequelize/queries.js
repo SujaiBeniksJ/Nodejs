@@ -1,14 +1,16 @@
 const models = require("./models");
 
+const db = new models();
+
 const findEngineersByProject = (pname) => {
-  models.ProjectModel.findAll({
+  db.models.Projects.findAll({
     where: {
       name: pname
     },
     attributes: ["Pid"]
   })
     .then((pid) => {
-      return models.EngineerModel.findAll({
+      return db.models.Engineers.findAll({
         where: {
           Pid: pid[0].Pid
         }
@@ -28,14 +30,14 @@ const findEngineersByProject = (pname) => {
 };
 
 const assignManagerToProject = (mid, pid, name) => {
-  models.ManagerModel.findAll({
+  db.models.Managers.findAll({
     where: {
       Mid: mid
     }
   })
     .then(data => {
       if (data.length) {
-        return models.ManagerModel.update({
+        return db.models.Managers.update({
           Pid: pid
         }, {
           where: {
@@ -44,7 +46,7 @@ const assignManagerToProject = (mid, pid, name) => {
         });
       }
       else {
-        return models.ManagerModel.create({
+        return db.models.Managers.create({
           Mid: mid,
           name: name,
           Pid: pid
@@ -52,7 +54,7 @@ const assignManagerToProject = (mid, pid, name) => {
       }
     })
     .then(() => {
-      return models.ManagerModel.findAll();
+      return db.models.Managers.findAll();
     })
     .then(result => {
       console.log("Successfully Inserted or updated: ");
@@ -64,7 +66,7 @@ const assignManagerToProject = (mid, pid, name) => {
 };
 
 const deleteEmployeeDetails = (eid) => {
-  models.EngineerModel.destroy({
+  db.models.Engineers.destroy({
     where: {
       Eid: eid
     }
@@ -72,14 +74,14 @@ const deleteEmployeeDetails = (eid) => {
     .then(() => {
       console.log(`Employee ${eid} deleted`);
     })
-    .then(err=>{
+    .catch(err=>{
       console.log(`couldn't find the employee${err}`);
     });
 };
 
 
 const updateEmployeeDetails = (eid, ename, pid) => {
-  models.EngineerModel.update({
+  db.models.Engineers.update({
     Eid: eid,
     name: ename,
     Pid: pid
@@ -94,7 +96,7 @@ const updateEmployeeDetails = (eid, ename, pid) => {
 
 
 const deleteProject = (pname) => {
-  models.ProjectModel.destroy({
+  db.models.Projects.destroy({
     where: {
       name: pname
     }
