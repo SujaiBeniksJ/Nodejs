@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../connection.js");
-const ProjectTable = require("./ProjectModel.js");
 
 const EngineerTable = sequelize.define("Engineers", {
   Eid: {
@@ -23,9 +22,5 @@ const EngineerTable = sequelize.define("Engineers", {
 {
   timestamps: false
 });
-
-EngineerTable.associate = function() {
-  ProjectTable.hasMany(EngineerTable, {foreignKey: "Pid"});
-};
 
 module.exports = EngineerTable;

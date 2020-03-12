@@ -25,7 +25,7 @@ const ManagerTable = sequelize.define("Managers", {
 });
 
 ManagerTable.associate = function() {
-  ProjectTable.hasOne(ManagerTable, {foreignKey: "Pid"});
+  ManagerTable.hasOne(ProjectTable, {foreignKey: "Pid"});
 };
 
 module.exports = ManagerTable;

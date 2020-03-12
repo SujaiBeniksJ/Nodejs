@@ -7,8 +7,8 @@ const services = require("../services/index.js");
 
 const processTokenInput = (req, res) => {
   publicKey = req.body;
-  // Token generated will get expired in 30 seconds
-  jwt.sign(publicKey, privateKey, { expiresIn: 30 }, (err, token) => {
+  // Token generated will get expired in 24 hrs
+  return jwt.sign(publicKey, privateKey, { expiresIn: 60*60*24 }, (err, token) => {
     res.send({
       success: true,
       token
@@ -27,6 +27,7 @@ const processTokenValidation = async (req, res) => {
 };
 
 const processMultiple10 = (req, res) => {
+  // console.log(err)
   const output = services.getMultiple10(req.params.input);
   res.send(output);
 };

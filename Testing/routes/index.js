@@ -24,4 +24,8 @@ router.post("/occurenceCounter", occurenceCounterInputValidator, processOccurenc
 
 router.get("/checkArmStrong/:num", checkArmstringInputValidator, processCheckArmstrong);
 
+router.get("/sendClientError",(req, res, next)=>{
+  next(new Error());
+});
+
 module.exports = router;

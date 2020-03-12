@@ -1,4 +1,15 @@
 const jwt = require("jsonwebtoken");
+const Ajv = require("ajv");
+
+const ajv = new Ajv();
+
+const ajvValidator = (schema, input, next) => {
+  var valid = ajv.validate(schema, input);
+  if (!valid) {
+    return next(new Error(valid));
+  }
+  return valid;
+};
 
 const countOccurence = (str) => {
   const strArr = str.split("");
@@ -46,5 +57,6 @@ module.exports = {
   countOccurence,
   armstrongNum,
   getMultiple10,
-  verifyToken
+  verifyToken,
+  ajvValidator
 };

@@ -1,30 +1,23 @@
 "use strict";
-const ProjectTable = require("../models/ProjectModel");
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    const ManagerTable = queryInterface.createTable("Managers", {
-      Mid: {
-        primaryKey: true,
-        type: Sequelize.INTEGER
+  up: (queryInterface, Sequelize) => queryInterface.createTable("Managers", {
+    Mid: {
+      primaryKey: true,
+      type: Sequelize.INTEGER
+    },
+    name: {
+      type: Sequelize.STRING
+    },
+    Pid: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      references: {
+        model: "Projects",
+        key: "Pid",
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      Pid: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: "Projects",
-          key: "Pid",
-        },
-        onDelete: "CASCADE",
-      }
-    });
-    ManagerTable.associate = function() {
-      ProjectTable.hasOne(ManagerTable, {foreignKey: "Pid"});
-    };
-    return ManagerTable;
-  },
+      onDelete: "CASCADE",
+    }
+  }),
   down: (queryInterface) => {
     return queryInterface.dropTable("Managers");
   }

@@ -2,10 +2,10 @@ const assert = require("chai").assert;
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let {server, app} = require("../../index");
-// const sinon = require("sinon");
-const sandbox = require("sinon").createSandbox();
+const sinon = require("sinon");
+// const sandbox = require("sinon").createSandbox();
 
-const services = require("../../services/index.js");
+// const services = require("../../services/index.js");
 
 chai.use(chaiHttp);
 
@@ -153,15 +153,7 @@ describe("token creation api",()=>{
 });
 
 describe("testing token validation api",()=>{
-  let stub;
-  beforeEach(()=>{
-    stub = sandbox.stub(services, "verifyToken");
-  });
-  afterEach(()=>{
-    sandbox.restore();
-  });
   it("checking the flow of invalid token",(done)=>{
-    stub.resolves({err: true});
     chai.request(app)
       .get("/check/?token=sometoken")
       .end((err, res)=>{
@@ -170,31 +162,32 @@ describe("testing token validation api",()=>{
       });
   });
   it("checking the flow of expired token response",(done)=>{
-    stub.resolves({err: true});
+    let clock = sinon.useFakeTimers(new Date("Fri Mar 13 2020 10:00"));
     chai.request(app)
-      .get("/check/?token=c8729df6193526a8117c514612a105b9aef3077c635bff0abcbaf5a312b50b04")
+      .get("/check/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnB1dCI6ImhlbGxvIiwiaWF0IjoxNTgzOTg2MzU2LCJleHAiOjE1ODQwNzI3NTZ9.Z9mg6vKnpK-Ph1WxvcfT4wng-0N4g7T9B68qlfLhiFQ")
       .end((err, res)=>{
         assert.equal(res.status, 200);
         assert.equal(res.body.success, false);
         assert.equal(res.body.data, "Token expired! Login Again");
+        clock.restore();
         done();
       });
   });
   it("checking the flow of true authentication",(done)=>{
-    stub.resolves({decoded: {input: "hello"}});
+    let clock = sinon.useFakeTimers(new Date("Fri Mar 12 2020 10:00"));
     chai.request(app)
-      .get("/check/?token=c8729df6193526a8117c514612a105b9aef3077c635bff0abcbaf5a312b50b04")
+      .get("/check/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnB1dCI6ImhlbGxvIiwiaWF0IjoxNTgzOTg2MzU2LCJleHAiOjE1ODQwNzI3NTZ9.Z9mg6vKnpK-Ph1WxvcfT4wng-0N4g7T9B68qlfLhiFQ")
       .end((err, res)=>{
         assert.equal(res.status, 200);
         assert.equal(res.body.success, true);
         assert.equal(res.body.data, "Authentication passed");
+        clock.restore();
         done();
       });
   });
   it("checking the flow of false authentication",(done)=>{
-    stub.resolves({decoded: {input: "hi"}});
     chai.request(app)
-      .get("/check/?token=c8729df6193526a8117c514612a105b9aef3077c635bff0abcbaf5a312b50b04")
+      .get("/check/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnB1dCI6ImhlbGxvMCIsImlhdCI6MTU4Mzk4NjQ2MSwiZXhwIjoxNTg0MDcyODYxfQ.bZ_roVHEcKQjiZmDzCEvBr5QXKGyM4RTn-xfBtzxays")
       .end((err, res)=>{
         assert.equal(res.status, 200);
         assert.equal(res.body.success, false);
