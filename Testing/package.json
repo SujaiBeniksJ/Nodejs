@@ -4,30 +4,30 @@
   "description": "",
   "main": "index.test.js",
   "scripts": {
-    "test": "nyc mocha tests/unit/**/**/*.test.js"
+    "test": "nyc --show-process-tree --reporter=lcov --reporter=text-summary mocha tests/unit/**/**/*.test.js"
   },
   "nyc": {
     "reporter": [
       "lcov"
     ],
-    "check-coverage": true,
+    "check-coverage": false,
     "all": true,
     "cache": true
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.0",
+    "nyc": "^15.0.0",
+    "sinon": "^9.0.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0"
   },
   "dependencies": {
     "ajv": "^6.12.0",
     "body-parser": "^1.19.0",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mocha": "^7.1.0",
-    "nyc": "^15.0.0",
-    "sinon": "^9.0.0"
+    "jsonwebtoken": "^8.5.1"
   }
 }

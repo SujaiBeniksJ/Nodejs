@@ -15,7 +15,7 @@ app.use("/*", (req, res) => res.sendStatus(404));
 
 let appstarted,server={};
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.status(400);
   res.send("Oops, Bad Request");
 });

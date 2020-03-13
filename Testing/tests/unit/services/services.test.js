@@ -2,7 +2,6 @@ const services = require("../../../services");
 const assert = require("chai").assert;
 const jwt = require("jsonwebtoken");
 const sandbox = require("sinon").createSandbox();
-const sinon = require("sinon");
 
 const Ajv = require("ajv");
  
@@ -59,17 +58,20 @@ describe("verifyToken()",()=>{
   });
 });
 
-describe.skip("ajvValidator",()=>{
+describe("ajvValidator",()=>{
   it("should return true value from ajv",()=>{
-    let stub = sinon.stub(new Ajv(), "validate").returns(true);
-    let val = services.ajvValidator();
+    let stub = sandbox.stub(ajv, "validate");
+    stub.returns(true);
+    let val = services.ajvValidator(true);
     assert.equal(val, true);
     stub.restore();
   });
-  it("should return true value from ajv",()=>{
-    let next = sandbox.spy();
-    let stub = sandbox.stub(new Ajv(), "validate").returns(false);
-    let val = services.ajvValidator({}, {}, next);
+  it("should return false and call next value from ajv",()=>{
+    let next = sandbox.stub();
+    let stub = sandbox.stub(ajv, "validate");
+    stub.returns(false);
+    let val = services.ajvValidator(false, {}, next);
+    assert.equal(next.calledOnce, true);
     console.log(val);
     stub.restore();
   });

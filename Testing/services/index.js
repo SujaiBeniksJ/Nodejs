@@ -4,7 +4,7 @@ const Ajv = require("ajv");
 const ajv = new Ajv();
 
 const ajvValidator = (schema, input, next) => {
-  var valid = ajv.validate(schema, input);
+  let valid = ajv.validate(schema, input);
   if (!valid) {
     return next(new Error(valid));
   }
